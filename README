@@ -1,0 +1,3 @@
+# tcpp: a c++ wrapper for tcp sockets
+
+In my work, I find myself writing the long boilerplate of BSD sockets repeatedly. This is a c++ wrapper to encapsulate that.
