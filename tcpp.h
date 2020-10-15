@@ -1,6 +1,11 @@
+/**
+ * Author: Mohammed Nurul Hoque
+ */
+
 #ifndef _TCPP_H_
 #define _TCPP_H_
 
+#include <iostream>
 #include <sstream>
 
 #include <unistd.h>
@@ -74,7 +79,7 @@ public:
 		char buf[256];
 		int bytes;
 
-		while ((sstr >> obj).eof() && sstr.bad()) {
+		while ((sstr >> obj).eof() && sstr.fail()) {
 			bytes = recv(sockfd, buf, sizeof(buf), 0);
 			if (bytes < 0) {
 				throw std::runtime_error("Error reading from socket");
@@ -87,16 +92,26 @@ public:
 					throw std::runtime_error("Invalid input format");
 				}
 			} else {
+				sstr.clear();
 				sstr.write(buf, bytes);
 			}
 		}
 
-		if (sstr.bad()) {
+		if (sstr.fail()) {
 			throw std::runtime_error("Invalid input format");
 		} else {
 			// successful read
 			return *this;
 		}
+	}
+
+	template<class T>
+	RWSocket& operator<<(T&& obj) {
+		std::ostringstream buf;
+		buf << obj;
+		std::string s = buf.str();;
+		write(sockfd, s.c_str(), s.size());
+		return *this;
 	}
 
 private:

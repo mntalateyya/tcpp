@@ -37,7 +37,8 @@ RWSocket ServerSocket::accept() {
 	return RWSocket(clientfd, client);
 }
 
-RWSocket::RWSocket(const char *ip, short port) {
+RWSocket::RWSocket(const char *ip, short port)
+{
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		throw std::runtime_error("Could not create socket");
 
